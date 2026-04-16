@@ -3,6 +3,7 @@ services:
     image: mysql:8.0
     container_name: lapor_sampah_db
     restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: persampahan_db
