@@ -303,10 +303,6 @@ def uploaded_file(filename):
 def is_production():
     return app.config.get("ENV") == "production"
 
-
-# init db on import (for gunicorn runtime)
-init_db()
-
 if __name__ == "__main__":
     debug_mode = not is_production()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=debug_mode)
