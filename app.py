@@ -1,27 +1,28 @@
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash
+import time
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.secret_key = "dev-secret-key"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # =========================
-# KONFIGURASI DATABASE
+# ENV / CONFIG
 # =========================
-# Default: SQLite lokal
-# Kalau mau test MySQL lokal:
-DATABASE_URL="mysql+pymysql://root:@localhost:3306/persampahan_db"
-# DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///persampahan.db")
-app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+# default aman untuk local dev
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "mysql+pymysql://root:@localhost:3306/persampahan_db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["ENV"] = os.getenv("FLASK_ENV", "development")
 
-# Upload config
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 db = SQLAlchemy(app)
@@ -112,7 +113,7 @@ def laporan():
             if allowed_file(foto_file.filename):
                 safe_name = secure_filename(foto_file.filename)
                 # kasih prefix timestamp supaya tidak bentrok
-                filename = f"{int(datetime.utcnow().timestamp())}_{safe_name}"
+                filename = f"{int(time.time())}_{safe_name}"
                 foto_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             else:
                 flash("Format file foto tidak didukung.", "error")
@@ -266,8 +267,13 @@ def uploaded_file(filename):
     from flask import send_from_directory
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
+def is_production():
+    return app.config.get("ENV") == "production"
 
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()  # auto create table
-    app.run(debug=True)
+        db.create_all()
+
+    # debug aktif hanya saat development
+    debug_mode = not is_production()
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=debug_mode)
