@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Laporan Sampah{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Pelaporan Sampah Liar (dengan lokasi)</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row">
+      <div>
+        <label>Judul Laporan</label>
+        <input type="text" name="judul" placeholder="Contoh: Sampah menumpuk di jalan utama" required>
+      </div>
+      <div>
+        <label>Lokasi / Alamat</label>
+        <input type="text" name="lokasi" placeholder="Contoh: Jl. Merdeka No. 10" required>
+      </div>
+    </div>
+
+    <div class="row-1" style="margin-top:10px;">
+      <label>Deskripsi</label>
+      <textarea name="deskripsi" placeholder="Jelaskan kondisi sampah..." required></textarea>
+    </div>
+
+    <div class="row-1" style="margin-top:10px;">
+      <label>Foto (opsional)</label>
+      <input type="file" name="foto" accept=".png,.jpg,.jpeg,.gif">
+    </div>
+
+    <div style="margin-top:12px;">
+      <button type="submit">Kirim Laporan</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Daftar Laporan</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Judul</th>
+        <th>Lokasi</th>
+        <th>Deskripsi</th>
+        <th>Foto</th>
+        <th>Status</th>
+        <th>Waktu</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in data_laporan %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.judul }}</td>
+        <td>
+          {{ x.lokasi }}<br>
+          <span class="small">{{ x.latitude or '-' }}, {{ x.longitude or '-' }}</span>
+        </td>
+        <td>{{ x.deskripsi }}</td>
+        <td>
+          {% if x.foto %}
+            <a href="{{ url_for('uploaded_file', filename=x.foto) }}" target="_blank">
+              <img class="thumb" src="{{ url_for('uploaded_file', filename=x.foto) }}" alt="foto">
+            </a>
+          {% else %}-{% endif %}
+        </td>
+        <td><span class="badge {{ x.status }}">{{ x.status }}</span></td>
+        <td>{{ x.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+          <form class="inline-form" method="POST" action="{{ url_for('update_status_laporan', laporan_id=x.id) }}">
+            <select name="status">
+              <option value="baru" {% if x.status=='baru' %}selected{% endif %}>baru</option>
+              <option value="diproses" {% if x.status=='diproses' %}selected{% endif %}>diproses</option>
+              <option value="selesai" {% if x.status=='selesai' %}selected{% endif %}>selesai</option>
+            </select>
+            <button type="submit">Update</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8">Belum ada laporan.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

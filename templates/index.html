@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Sistem Persampahan{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Dashboard Persampahan</h2>
+  <p class="small">Ringkasan data laporan, jadwal pengangkutan, dan monitoring petugas.</p>
+</div>
+
+<div class="grid">
+  <div class="stat card">
+    <div class="label">Total Laporan Sampah</div>
+    <div class="value">{{ total_laporan }}</div>
+  </div>
+  <div class="stat card">
+    <div class="label">Laporan Baru</div>
+    <div class="value">{{ laporan_baru }}</div>
+  </div>
+  <div class="stat card">
+    <div class="label">Total Jadwal</div>
+    <div class="value">{{ total_jadwal }}</div>
+  </div>
+  <div class="stat card">
+    <div class="label">Jadwal Hari Ini</div>
+    <div class="value">{{ jadwal_hari_ini }}</div>
+  </div>
+  <div class="stat card">
+    <div class="label">Total Petugas</div>
+    <div class="value">{{ total_petugas }}</div>
+  </div>
+  <div class="stat card">
+    <div class="label">Petugas Aktif/Siaga</div>
+    <div class="value">{{ petugas_aktif }}</div>
+  </div>
+</div>
+{% endblock %}

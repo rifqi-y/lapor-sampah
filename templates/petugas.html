@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Monitoring Petugas{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Monitoring Petugas Kebersihan</h2>
+  <form method="POST">
+    <div class="row">
+      <div>
+        <label>Nama Petugas</label>
+        <input type="text" name="nama" placeholder="Contoh: Budi" required>
+      </div>
+      <div>
+        <label>Area Tugas</label>
+        <input type="text" name="area_tugas" placeholder="Contoh: Zona Barat" required>
+      </div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <label>Status Awal</label>
+      <select name="status">
+        <option value="siaga">siaga</option>
+        <option value="bertugas">bertugas</option>
+        <option value="istirahat">istirahat</option>
+        <option value="selesai">selesai</option>
+      </select>
+    </div>
+
+    <div style="margin-top:12px;">
+      <button type="submit">Tambah Petugas</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Daftar Petugas</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Area Tugas</th>
+        <th>Status</th>
+        <th>Update Terakhir</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in data_petugas %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.nama }}</td>
+        <td>{{ x.area_tugas }}</td>
+        <td><span class="badge {{ x.status }}">{{ x.status }}</span></td>
+        <td>{{ x.update_terakhir.strftime('%Y-%m-%d %H:%M') if x.update_terakhir else '-' }}</td>
+        <td>
+          <form class="inline-form" method="POST" action="{{ url_for('update_status_petugas', petugas_id=x.id) }}">
+            <select name="status">
+              <option value="siaga" {% if x.status=='siaga' %}selected{% endif %}>siaga</option>
+              <option value="bertugas" {% if x.status=='bertugas' %}selected{% endif %}>bertugas</option>
+              <option value="istirahat" {% if x.status=='istirahat' %}selected{% endif %}>istirahat</option>
+              <option value="selesai" {% if x.status=='selesai' %}selected{% endif %}>selesai</option>
+            </select>
+            <button type="submit">Update</button>
+          </form>
+          <form style="margin-top:6px;" method="POST" action="{{ url_for('hapus_petugas', petugas_id=x.id) }}" onsubmit="return confirm('Hapus petugas ini?')">
+            <button type="submit" class="btn-danger">Hapus</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6">Belum ada data petugas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

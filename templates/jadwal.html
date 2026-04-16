@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Jadwal Pengangkutan{% endblock %} {%
+block content %}
+<div class="card">
+  <h2>Jadwal Pengangkutan Sampah</h2>
+  <form method="POST">
+    <div class="row">
+      <div>
+        <label>Wilayah</label>
+        <input type="text" name="wilayah" placeholder="Contoh: Kecamatan A" required />
+      </div>
+      <div>
+        <label>Tanggal</label>
+        <input type="date" name="tanggal" required />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Jam</label>
+        <input type="text" name="jam" placeholder="Contoh: 07:00 - 09:00" required />
+      </div>
+      <div>
+        <label>Status</label>
+        <select name="status">
+          <option value="terjadwal">terjadwal</option>
+          <option value="berjalan">berjalan</option>
+          <option value="selesai">selesai</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top: 10px">
+      <label>Keterangan (opsional)</label>
+      <input type="text" name="keterangan" placeholder="Catatan tambahan" />
+    </div>
+
+    <div style="margin-top: 12px">
+      <button type="submit">Tambah Jadwal</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Daftar Jadwal</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Wilayah</th>
+        <th>Tanggal</th>
+        <th>Jam</th>
+        <th>Status</th>
+        <th>Keterangan</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for x in data_jadwal %}
+      <tr>
+        <td>{{ x.id }}</td>
+        <td>{{ x.wilayah }}</td>
+        <td>{{ x.tanggal }}</td>
+        <td>{{ x.jam }}</td>
+        <td><span class="badge {{ x.status }}">{{ x.status }}</span></td>
+        <td>{{ x.keterangan or '-' }}</td>
+        <td>
+          <form class="inline-form" method="POST" action="{{ url_for('update_status_jadwal', jadwal_id=x.id) }}">
+            <select name="status">
+              <option value="terjadwal" {% if x.status=="terjadwal" %}selected{% endif %}>
+                terjadwal
+              </option>
+              <option value="berjalan" {% if x.status=="berjalan" %}selected{% endif %}>
+                berjalan
+              </option>
+              <option value="selesai" {% if x.status=="selesai" %}selected{% endif %}>
+                selesai
+              </option>
+            </select>
+            <button type="submit">Update</button>
+          </form>
+          <form style="margin-top: 6px" method="POST" action="{{ url_for('hapus_jadwal', jadwal_id=x.id) }}"
+            onsubmit="return confirm('Hapus jadwal ini?');">
+            <button type="submit" class="btn-danger">Hapus</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7">Belum ada jadwal.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
