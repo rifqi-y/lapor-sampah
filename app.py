@@ -15,7 +15,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 # ENV / CONFIG
 # =========================
 # default aman untuk local dev
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret-change-me")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "feiaufivbaiebriejwafhfoaduhf")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///persampahan.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ENV"] = os.getenv("FLASK_ENV", "development")
