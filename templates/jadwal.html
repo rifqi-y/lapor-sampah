@@ -22,9 +22,9 @@ block content %}
       <div>
         <label>Status</label>
         <select name="status">
-          <option value="terjadwal">terjadwal</option>
-          <option value="berjalan">berjalan</option>
-          <option value="selesai">selesai</option>
+          <option value="Terjadwal">Terjadwal</option>
+          <option value="Berjalan">Berjalan</option>
+          <option value="Selesai">Selesai</option>
         </select>
       </div>
     </div>
@@ -66,14 +66,14 @@ block content %}
         <td>
           <form class="inline-form" method="POST" action="{{ url_for('update_status_jadwal', jadwal_id=x.id) }}">
             <select name="status">
-              <option value="terjadwal" {% if x.status=="terjadwal" %}selected{% endif %}>
-                terjadwal
+              <option value="Terjadwal" {% if x.status=="Terjadwal" %}selected{% endif %}>
+                Terjadwal
               </option>
-              <option value="berjalan" {% if x.status=="berjalan" %}selected{% endif %}>
-                berjalan
+              <option value="Berjalan" {% if x.status=="Berjalan" %}selected{% endif %}>
+                Berjalan
               </option>
-              <option value="selesai" {% if x.status=="selesai" %}selected{% endif %}>
-                selesai
+              <option value="Selesai" {% if x.status=="Selesai" %}selected{% endif %}>
+                Selesai
               </option>
             </select>
             <button type="submit">Update</button>

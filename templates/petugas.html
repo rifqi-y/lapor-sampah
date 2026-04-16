@@ -18,10 +18,10 @@
     <div style="margin-top:10px;">
       <label>Status Awal</label>
       <select name="status">
-        <option value="siaga">siaga</option>
-        <option value="bertugas">bertugas</option>
-        <option value="istirahat">istirahat</option>
-        <option value="selesai">selesai</option>
+        <option value="Siaga">Siaga</option>
+        <option value="Bertugas">Bertugas</option>
+        <option value="Istirahat">Istirahat</option>
+        <option value="Selesai">Selesai</option>
       </select>
     </div>
 
@@ -55,10 +55,10 @@
         <td>
           <form class="inline-form" method="POST" action="{{ url_for('update_status_petugas', petugas_id=x.id) }}">
             <select name="status">
-              <option value="siaga" {% if x.status=='siaga' %}selected{% endif %}>siaga</option>
-              <option value="bertugas" {% if x.status=='bertugas' %}selected{% endif %}>bertugas</option>
-              <option value="istirahat" {% if x.status=='istirahat' %}selected{% endif %}>istirahat</option>
-              <option value="selesai" {% if x.status=='selesai' %}selected{% endif %}>selesai</option>
+              <option value="Siaga" {% if x.status=='Siaga' %}selected{% endif %}>Siaga</option>
+              <option value="Bertugas" {% if x.status=='Bertugas' %}selected{% endif %}>Bertugas</option>
+              <option value="Istirahat" {% if x.status=='Istirahat' %}selected{% endif %}>Istirahat</option>
+              <option value="Selesai" {% if x.status=='Selesai' %}selected{% endif %}>Selesai</option>
             </select>
             <button type="submit">Update</button>
           </form>

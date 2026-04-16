@@ -68,9 +68,9 @@
         <td>
           <form class="inline-form" method="POST" action="{{ url_for('update_status_laporan', laporan_id=x.id) }}">
             <select name="status">
-              <option value="baru" {% if x.status=='baru' %}selected{% endif %}>baru</option>
-              <option value="diproses" {% if x.status=='diproses' %}selected{% endif %}>diproses</option>
-              <option value="selesai" {% if x.status=='selesai' %}selected{% endif %}>selesai</option>
+              <option value="Baru" {% if x.status=='Baru' %}selected{% endif %}>Baru</option>
+              <option value="Diproses" {% if x.status=='Diproses' %}selected{% endif %}>Diproses</option>
+              <option value="Selesai" {% if x.status=='Selesai' %}selected{% endif %}>Selesai</option>
             </select>
             <button type="submit">Update</button>
           </form>
