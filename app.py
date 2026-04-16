@@ -27,6 +27,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 db = SQLAlchemy(app)
 
+@app.before_request
+def create_tables_once():
+    db.create_all()
+
 
 # =========================
 # MODEL
@@ -270,9 +274,6 @@ def is_production():
     return app.config.get("ENV") == "production"
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-
     # debug aktif hanya saat development
     debug_mode = not is_production()
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=debug_mode)
